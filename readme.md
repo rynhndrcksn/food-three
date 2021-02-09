@@ -1,7 +1,7 @@
 # Food-two
 
 ## Assignment:
-Food-two build off what we did with our other Food assignment.
+Food-three builds off what we did with the food-two assignment. Adds data layer and validation.
 
 ## Author:
 - [Ryan Hendrickson](https://github.com/rynhndrcksn)
