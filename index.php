@@ -41,7 +41,10 @@ $f3->route('GET /order', function($f3) {
 // we can only use POST if the form method is POST, otherwise we need to use GET as GET is used for typing in the
 // URL, hyperlinks, and most other things
 // define an order2 route
-$f3->route('POST /order2', function() {
+$f3->route('POST /order2', function($f3) {
+
+	$f3->set('condiments', getCondiments());
+
 	// gather info from order
 	if (isset($_POST['food'])) {
 		$_SESSION['food'] = $_POST['food'];

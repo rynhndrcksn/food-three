@@ -5,23 +5,13 @@
 	<h1>Food Order, continued:</h1>
 	<form method="POST" action="summary">
 		<fieldset>Pick your condiments</fieldset>
-		<div class="form-check">
-			<input class="form-check-input" type="checkbox" value="mayonnaise" id="mayonnaise" name="condiments[]">
-			<label class="form-check-label" for="mayonnaise">Mayonnaise</label>
-		</div>
-		<div class="form-check">
-			<input class="form-check-input" type="checkbox" value="mustard" id="mustard" name="condiments[]">
-			<label class="form-check-label" for="mustard">Mustard</label>
-		</div>
-		<div class="form-check">
-			<input class="form-check-input" type="checkbox" value="ketchup" id="ketchup" name="condiments[]">
-			<label class="form-check-label" for="ketchup">Ketchup</label>
-		</div>
-		<div class="form-check">
-			<input class="form-check-input" type="checkbox" value="sriracha" id="sriracha" name="condiments[]">
-			<label class="form-check-label" for="sriracha">Sriracha</label>
-		</div>
-		<input type="submit" id="submit-order" value="Place Order">
+		<repeat group="@condiments" value="@condiment">
+			<div class="form-check">
+				<input class="form-check-input" type="checkbox" value="{{@condiment}}" id="{{@condiment}}" name="condiments[]">
+				<label class="form-check-label text-capitalize" for="{{@condiment}}">{{@condiment}}</label>
+			</div>
+		</repeat>
+		<input type="submit" id="submit-order" value="Next >>" class="btn btn-primary mt-2">
 	</form>
 </div>
 

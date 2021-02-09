@@ -9,3 +9,7 @@
 function getMeals(): array {
 	return array('breakfast', 'lunch', 'dinner');
 }
+
+function getCondiments() {
+	return array('ketchup', 'mayonnaise', 'mustard', 'sriracha');
+}
