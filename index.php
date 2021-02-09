@@ -14,6 +14,7 @@ session_start();
 
 // require autoload file
 require_once ('vendor/autoload.php');
+require_once ('model/data-layer.php');
 
 // create an instance of the base class (fat-free framework)
 $f3 = Base::instance();
@@ -29,7 +30,10 @@ $f3->route('GET /', function() {
 });
 
 // define an order route
-$f3->route('GET /order', function() {
+$f3->route('GET /order', function($f3) {
+
+	$f3->set('meals', getMeals());
+
 	$view = new Template();
 	echo $view->render('views/order.html');
 });
