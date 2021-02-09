@@ -1,0 +1,12 @@
+{
+  "name": "328/food-three",
+  "authors": [
+    {
+      "name": "Ryan Hendrickson",
+      "email": "rhendrickson11@mail.greenriver.edu"
+    }
+  ],
+  "require": {
+    "bcosca/fatfree-core": "dev-master"
+  }
+}
