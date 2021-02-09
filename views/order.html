@@ -3,10 +3,15 @@
 <body>
 <div class="container">
 	<h1>Food Order:</h1>
-	<form method="POST" action="order2">
+	<form method="POST" action="#">
 		<div class="input-group">
-			<label for="food">What would you like to order?</label>
+			<label for="food"><span class="text-danger">*</span> What would you like to order?</label>
+			<br>
 			<input type="text" id="food" name="food">
+			<br>
+			<check if="{{ isset(@errors['food']) }}">
+				<span class="text-danger">{{ @errors['food'] }}</span>
+			</check>
 		</div>
 		<repeat group="{{ @meals }}" value="{{ @meal }}">
 			<div class="form-check">

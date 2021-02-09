@@ -5,7 +5,7 @@
 	<h1>Food Order, continued:</h1>
 	<form method="POST" action="summary">
 		<fieldset>Pick your condiments</fieldset>
-		<repeat group="@condiments" value="@condiment">
+		<repeat group="{{@condiments}}" value="{{@condiment}}">
 			<div class="form-check">
 				<input class="form-check-input" type="checkbox" value="{{@condiment}}" id="{{@condiment}}" name="condiments[]">
 				<label class="form-check-label text-capitalize" for="{{@condiment}}">{{@condiment}}</label>

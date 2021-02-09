@@ -15,6 +15,7 @@ session_start();
 // require autoload file
 require_once ('vendor/autoload.php');
 require_once ('model/data-layer.php');
+require_once ('model/validate.php');
 
 // create an instance of the base class (fat-free framework)
 $f3 = Base::instance();
@@ -30,7 +31,25 @@ $f3->route('GET /', function() {
 });
 
 // define an order route
-$f3->route('GET /order', function($f3) {
+$f3->route('GET|POST /order', function($f3) {
+
+	// if the form has been submitted
+	if ($_SESSION['REQUEST_METHOD'] == 'POST') {
+		// gather info from order and validate it
+		if (validFood($_POST['food'])) {
+			$_SESSION['food'] = $_POST['food'];
+		} else {
+			$f3->set('errors["food"]', 'Food cannot be blank');
+		}
+		if (validFood($_POST['meal'])) {
+			$_SESSION['meal'] = $_POST['meal'];
+		}
+
+		// if there are no errors, redirect to /order2
+		if (empty($f3->get('errors'))) {
+			$f3-reroute('/order2');
+		}
+	}
 
 	$f3->set('meals', getMeals());
 
@@ -41,17 +60,11 @@ $f3->route('GET /order', function($f3) {
 // we can only use POST if the form method is POST, otherwise we need to use GET as GET is used for typing in the
 // URL, hyperlinks, and most other things
 // define an order2 route
-$f3->route('POST /order2', function($f3) {
+$f3->route('GET|POST /order2', function($f3) {
 
 	$f3->set('condiments', getCondiments());
 
-	// gather info from order
-	if (isset($_POST['food'])) {
-		$_SESSION['food'] = $_POST['food'];
-	}
-	if (isset($_POST['meal'])) {
-		$_SESSION['meal'] = $_POST['meal'];
-	}
+
 	$view = new Template();
 	echo $view->render('views/order2.html');
 });
