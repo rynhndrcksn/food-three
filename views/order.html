@@ -19,6 +19,9 @@
 				<label class="form-check-label text-capitalize" for="{{@meal}}">{{@meal}}</label>
 			</div>
 		</repeat>
+		<check if="{{ isset(@errors['meal']) }}">
+			<span class="text-danger">{{ @errors['meal'] }}</span>
+		</check>
 		<input type="submit" id="submit-order" value="Next >>" class="btn btn-primary mt-2">
 	</form>
 </div>

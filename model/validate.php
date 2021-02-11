@@ -16,6 +16,15 @@ function validFood($food): bool {
 }
 
 /**
+ * returns true if $meal is a valid meal
+ * @param $meal
+ * @return bool
+ */
+function validMeals($meal): bool {
+	return in_array($meal, getMeals());
+}
+
+/**
  * takes a parameter, strips any white spaces, strips \\'s and //'s, and converts any HTML to it's ASCII code.
  * is used on its own, but also acts as a helper function
  * @param $data

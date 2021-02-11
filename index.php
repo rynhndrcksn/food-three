@@ -43,8 +43,11 @@ $f3->route('GET|POST /order', function($f3) {
 		} else {
 			$f3->set('errors["food"]', 'Food cannot be blank');
 		}
+
 		if (validFood($userMeal)) {
 			$_SESSION['meal'] = $userMeal;
+		} else {
+			$f3->set('errors["meal"]', 'Not a valid meal!');
 		}
 
 		// if there are no errors, redirect to /order2
@@ -54,6 +57,8 @@ $f3->route('GET|POST /order', function($f3) {
 	}
 
 	$f3->set('meals', getMeals());
+	$f3->set('', );
+	$f3->set('', );
 
 	$view = new Template();
 	echo $view->render('views/order.html');
