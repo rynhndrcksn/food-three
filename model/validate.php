@@ -7,12 +7,12 @@
  */
 
 /**
- * returns true if not empty
+ * returns true if not empty and contains only letters
  * @param $food
  * @return bool
  */
 function validFood($food): bool {
-	return !empty(prep_input($food));
+	return !empty(prep_input($food)) && ctype_alpha(prep_input($food));
 }
 
 /**

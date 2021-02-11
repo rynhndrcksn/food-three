@@ -34,15 +34,17 @@ $f3->route('GET /', function() {
 $f3->route('GET|POST /order', function($f3) {
 
 	// if the form has been submitted
-	if ($_SESSION['REQUEST_METHOD'] == 'POST') {
+	if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+		$userFood = prep_input($_POST['food']);
+		$userMeal = prep_input($_POST['meal']);
 		// gather info from order and validate it
-		if (validFood($_POST['food'])) {
-			$_SESSION['food'] = $_POST['food'];
+		if (validFood($userFood)) {
+			$_SESSION['food'] = $userFood;
 		} else {
 			$f3->set('errors["food"]', 'Food cannot be blank');
 		}
-		if (validFood($_POST['meal'])) {
-			$_SESSION['meal'] = $_POST['meal'];
+		if (validFood($userMeal)) {
+			$_SESSION['meal'] = $userMeal;
 		}
 
 		// if there are no errors, redirect to /order2

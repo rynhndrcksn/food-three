@@ -7,7 +7,7 @@
 		<div class="input-group">
 			<label for="food"><span class="text-danger">*</span> What would you like to order?</label>
 			<br>
-			<input type="text" id="food" name="food">
+			<input type="text" id="food" name="food" value="{{ @userFood }}">
 			<br>
 			<check if="{{ isset(@errors['food']) }}">
 				<span class="text-danger">{{ @errors['food'] }}</span>
