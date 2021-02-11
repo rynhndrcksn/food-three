@@ -3,7 +3,7 @@
 <body>
 <div class="container">
 	<h1>Food Order, continued:</h1>
-	<form method="POST" action="summary">
+	<form method="POST" action="#">
 		<fieldset>Pick your condiments</fieldset>
 		<repeat group="{{@condiments}}" value="{{@condiment}}">
 			<div class="form-check">
@@ -11,6 +11,9 @@
 				<label class="form-check-label text-capitalize" for="{{@condiment}}">{{@condiment}}</label>
 			</div>
 		</repeat>
+		<check if="{{ isset(@errors['conds']) }}">
+			<span class="text-danger">{{ @errors['conds'] }}</span>
+		</check>
 		<input type="submit" id="submit-order" value="Next >>" class="btn btn-primary mt-2">
 	</form>
 </div>

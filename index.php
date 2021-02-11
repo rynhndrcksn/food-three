@@ -44,7 +44,7 @@ $f3->route('GET|POST /order', function($f3) {
 			$f3->set('errors["food"]', 'Food cannot be blank');
 		}
 
-		if (validFood($userMeal)) {
+		if (validMeal($userMeal)) {
 			$_SESSION['meal'] = $userMeal;
 		} else {
 			$f3->set('errors["meal"]', 'Not a valid meal!');
@@ -52,13 +52,13 @@ $f3->route('GET|POST /order', function($f3) {
 
 		// if there are no errors, redirect to /order2
 		if (empty($f3->get('errors'))) {
-			$f3-reroute('/order2');
+			$f3->reroute('/order2');
 		}
 	}
 
 	$f3->set('meals', getMeals());
-	$f3->set('', );
-	$f3->set('', );
+	$f3->set('userFood', isset($userFood) ? $userFood : "");
+	$f3->set('userMeal', isset($userMeal) ? $userMeal : "");
 
 	$view = new Template();
 	echo $view->render('views/order.html');
@@ -69,21 +69,26 @@ $f3->route('GET|POST /order', function($f3) {
 // define an order2 route
 $f3->route('GET|POST /order2', function($f3) {
 
-	$f3->set('condiments', getCondiments());
+	if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+		if (isset($_POST['condiments'])) {
+			$userConds = $_POST['condiments'];
+			if (validConds($userConds)) {
+				$_SESSION['conds'] = implode(', ', $userConds);
+			} else {
+				$f3->set('errors["conds"]', 'Not a valid condiment!');
+			}
+		}
+		$f3->reroute('summary');
+	}
 
+	$f3->set('condiments', getCondiments());
 
 	$view = new Template();
 	echo $view->render('views/order2.html');
 });
 
 // define an order route
-$f3->route('POST /summary', function() {
-	// gather info from order2
-	if (isset($_POST['condiments'])) {
-		$_SESSION['condiments'] = implode(', ', $_POST['condiments']);
-	} else {
-		$_SESSION['condiments'] = 'none';
-	}
+$f3->route('GET|POST /summary', function() {
 
 	echo '<pre>';
 	var_dump($_SESSION);
@@ -91,6 +96,9 @@ $f3->route('POST /summary', function() {
 
 	$view = new Template();
 	echo $view->render('views/summary.html');
+
+	// clear the SESSION array
+	session_destroy();
 });
 
 // run fat free HAS TO BE THE LAST THING IN FILE

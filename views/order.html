@@ -15,7 +15,10 @@
 		</div>
 		<repeat group="{{ @meals }}" value="{{ @meal }}">
 			<div class="form-check">
-				<input class="form-check-input" type="radio" name="meal" id="{{@meal}}" value="{{@meal}}">
+				<input class="form-check-input" type="radio" name="meal" id="{{@meal}}" value="{{@meal}}"
+				<check if="{{ @meal == @userMeal }}">
+					checked
+				</check>>
 				<label class="form-check-label text-capitalize" for="{{@meal}}">{{@meal}}</label>
 			</div>
 		</repeat>

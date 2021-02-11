@@ -20,8 +20,22 @@ function validFood($food): bool {
  * @param $meal
  * @return bool
  */
-function validMeals($meal): bool {
+function validMeal($meal): bool {
 	return in_array($meal, getMeals());
+}
+
+/**
+ * returns true if $conds contains valid condiments
+ * @param $conds
+ * @return bool
+ */
+function validConds($conds): bool {
+	foreach ($conds as $cond) {
+		if (!in_array($cond, getCondiments())) {
+			return false;
+		}
+	}
+	return true;
 }
 
 /**
