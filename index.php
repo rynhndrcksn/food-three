@@ -15,7 +15,6 @@ session_start();
 // require autoload file
 require_once ('vendor/autoload.php');
 require_once ('model/data-layer.php');
-require_once ('model/validate.php');
 
 // create an instance of the base class (fat-free framework)
 $f3 = Base::instance();
