@@ -8,6 +8,13 @@
 
 class Validate
 {
+	// fields
+	private $_dataLayer;
+
+	function __construct()
+	{
+		$this->_dataLayer = new DataLayer();
+	}
 
 	/**
 	 * returns true if not empty and contains only letters
@@ -16,7 +23,7 @@ class Validate
 	 */
 	function validFood($food): bool
 	{
-		return !empty(prep_input($food)) && ctype_alpha(prep_input($food));
+		return !empty($this->prep_input($food)) && ctype_alpha($this->prep_input($food));
 	}
 
 	/**
@@ -26,7 +33,7 @@ class Validate
 	 */
 	function validMeal($meal): bool
 	{
-		return in_array($meal, getMeals());
+		return in_array($meal, $this->_dataLayer->getMeals());
 	}
 
 	/**
@@ -37,7 +44,7 @@ class Validate
 	function validConds($conds): bool
 	{
 		foreach ($conds as $cond) {
-			if (!in_array($cond, getCondiments())) {
+			if (!in_array($cond, $this->_dataLayer->getCondiments())) {
 				return false;
 			}
 		}
