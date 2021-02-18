@@ -20,56 +20,27 @@ $f3 = Base::instance();
 $validator = new Validate();
 $dataLayer = new DataLayer();
 $order = new Order();
+$controller = new Controller($f3);
 
 // turn on Fat-Free error reporting
 $f3->set('DEBUG', 3);
 
 // define a default route (home page)
-$f3->route('GET /', function() {
-	// create a new view, then sends it to the client
-	$view = new Template();
-	echo $view->render('views/home.html');
+$f3->route('GET /', function() use ($controller) {
+	$controller->home();
 });
 
 // define an order route
-$f3->route('GET|POST /order', function($f3) use ($order, $dataLayer, $validator) {
-
-	// if the form has been submitted
-	if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-		$userFood = $_POST['food'];
-		$userMeal = $_POST['meal'];
-		// gather info from order and validate it
-		if ($validator->validFood($userFood)) {
-			$order->setFood($userFood);
-		} else {
-			$f3->set('errors["food"]', 'Food cannot be blank');
-		}
-
-		if ($validator->validMeal($userMeal)) {
-			$order->setMeal($userMeal);
-		} else {
-			$f3->set('errors["meal"]', 'Not a valid meal!');
-		}
-
-		// if there are no errors, redirect to /order2
-		if (empty($f3->get('errors'))) {
-			$_SESSION['order'] = $order;
-			$f3->reroute('/order2');
-		}
-	}
-
-	$f3->set('meals', $dataLayer->getMeals());
-	$f3->set('userFood', isset($userFood) ? $userFood : "");
-	$f3->set('userMeal', isset($userMeal) ? $userMeal : "");
-
-	$view = new Template();
-	echo $view->render('views/order.html');
+$f3->route('GET|POST /order', function() use ($controller, $order, $dataLayer, $validator) {
+	$controller->order();
 });
 
 // we can only use POST if the form method is POST, otherwise we need to use GET as GET is used for typing in the
 // URL, hyperlinks, and most other things
 // define an order2 route
 $f3->route('GET|POST /order2', function($f3) use ($order, $validator, $dataLayer) {
+
+	// TODO: Move all this stuff to controller.php
 
 	if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		if (isset($_POST['condiments'])) {
