@@ -9,16 +9,17 @@
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
-// create a session
-session_start();
-
 // require autoload file
 require_once ('vendor/autoload.php');
+
+// create a session
+session_start();
 
 // instantiate the classes
 $f3 = Base::instance();
 $validator = new Validate();
 $dataLayer = new DataLayer();
+$order = new Order();
 
 // turn on Fat-Free error reporting
 $f3->set('DEBUG', 3);
@@ -31,7 +32,7 @@ $f3->route('GET /', function() {
 });
 
 // define an order route
-$f3->route('GET|POST /order', function($f3) use ($dataLayer, $validator) {
+$f3->route('GET|POST /order', function($f3) use ($order, $dataLayer, $validator) {
 
 	// if the form has been submitted
 	if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -39,19 +40,20 @@ $f3->route('GET|POST /order', function($f3) use ($dataLayer, $validator) {
 		$userMeal = $_POST['meal'];
 		// gather info from order and validate it
 		if ($validator->validFood($userFood)) {
-			$_SESSION['food'] = $userFood;
+			$order->setFood($userFood);
 		} else {
 			$f3->set('errors["food"]', 'Food cannot be blank');
 		}
 
 		if ($validator->validMeal($userMeal)) {
-			$_SESSION['meal'] = $userMeal;
+			$order->setMeal($userMeal);
 		} else {
 			$f3->set('errors["meal"]', 'Not a valid meal!');
 		}
 
 		// if there are no errors, redirect to /order2
 		if (empty($f3->get('errors'))) {
+			$_SESSION['order'] = $order;
 			$f3->reroute('/order2');
 		}
 	}
@@ -67,13 +69,14 @@ $f3->route('GET|POST /order', function($f3) use ($dataLayer, $validator) {
 // we can only use POST if the form method is POST, otherwise we need to use GET as GET is used for typing in the
 // URL, hyperlinks, and most other things
 // define an order2 route
-$f3->route('GET|POST /order2', function($f3) use ($validator, $dataLayer) {
+$f3->route('GET|POST /order2', function($f3) use ($order, $validator, $dataLayer) {
 
 	if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		if (isset($_POST['condiments'])) {
 			$userConds = $_POST['condiments'];
 			if ($validator->validConds($userConds)) {
-				$_SESSION['conds'] = implode(', ', $userConds);
+				// since our object is stored in $_SESSION, we can just set the condiments with implode
+				$_SESSION['order']->setCondiments(implode(', ', $userConds));
 			} else {
 				$f3->set('errors["conds"]', 'Not a valid condiment!');
 			}
